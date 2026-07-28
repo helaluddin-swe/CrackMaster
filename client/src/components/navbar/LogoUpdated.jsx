@@ -8,11 +8,28 @@ const LogoUpdated = ({onNavigate}) => {
           ? "text-white group-hover:text-indigo-400"
           : "text-slate-900 group-hover:text-indigo-600"
         }`}>
-        Preli<span className={darkMode ? "text-indigo-500" : "text-indigo-600"}>Master</span>
+        Backend
+        <span className="relative inline-block bg-linear-to-r from-emerald-500 via-teal-400 to-sky-500 bg-clip-text text-transparent pb-1">
+          MASTER
+          <svg
+            className="absolute -bottom-1 left-0 w-full h-3 text-emerald-400/80 pointer-events-none"
+            viewBox="0 0 250 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M2 7C70 2 180 2 248 6"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </svg>
+        </span>
       </h1>
-      <p className={`text-[9px] uppercase tracking-[0.2em] font-bold -mt-1 ${darkMode ? "text-slate-400" : "text-slate-500"
+      <p className={`text-[9px]  tracking-[0.2em] font-bold -mt-1 ${darkMode ? "text-slate-400" : "text-slate-500"
         }`}>
-        Exam & Career Preparation
+        Complete Backend Preparation
       </p>
     </div>
   )

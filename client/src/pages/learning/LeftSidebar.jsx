@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { BookOpen, Search, ChevronDown, ChevronRight, CheckCircle2, Circle, X, Sparkles, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { subjectCourses } from '../../components/navbar/LearnMenu';
+import { subjectCourses } from '../../utils/data';
+
 
 export default function LeftSidebar({
   courseData,

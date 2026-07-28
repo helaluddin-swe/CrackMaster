@@ -1,19 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Award, Calculator, Compass, Cpu, Globe, Layers, BookOpen, ChevronDown, ChevronRight, LayoutGrid } from "lucide-react";
+
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 
-export const subjectCourses = [
-  { name: "বাংলা সাহিত্য", slug: "bangla", icon: Layers, desc: 'Grammar & Literature' },
-  { name: 'ইংরেজি ভাষা ও সাহিত্য', slug: "english", icon: Globe, desc: 'Grammar, Vocab & Composition' },
-  { name: 'গাণিতিক যুক্তি', slug: "math", icon: Calculator, desc: 'Arithmetic, Algebra & Geometry' },
-  { name: 'বাংলাদেশ বিষয়াবলি', slug: "bd-affairs", icon: Award, desc: 'History, Constitution & Economy' },
-  { name: 'আন্তর্জাতিক বিষয়াবলি', slug: "intl-affairs", icon: Globe, desc: 'Global Politics & Treaties' },
-  { name: 'সাধারণ বিজ্ঞান', slug: "general-science", icon: Cpu, desc: 'Computer, Tech & Science' },
-  { name: 'কম্পিউটার ও তথ্যপ্রযুক্তি', slug: "computer-technology", icon: Cpu, desc: 'Computer, Tech & Science' },
-  { name: 'মানসিক দক্ষতা', slug: "mental-ethics", icon: Compass, desc: 'Reasoning, Ethics & Values' },
-  { name: 'সুশাসন ও নৈতিকতা', slug: "ethics", icon: Compass, desc: 'Reasoning, Ethics & Values' },
-];
+import {
+  Code2,
+  Server,
+  Database,
+  Globe,
+  Shield,
+  Network,
+  Boxes,
+  Cloud,
+  Brain,
+  Briefcase,
+  ChevronDown,
+  BookOpen,
+  LayoutGrid,
+  ChevronRight,
+} from "lucide-react";
+import { subjectCourses } from '../../utils/data.js';
+
+
 
 export default function LearnMenu({ onNavigate, handleActionClick }) {
   const { darkMode } = useTheme();

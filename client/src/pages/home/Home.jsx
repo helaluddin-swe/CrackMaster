@@ -5,6 +5,7 @@ import HeroSection from './HeroSection';
 import CompanySection from './comapany/CompanySection.jsx';
 import FeatureSection from './feature/FeatureSection.jsx';
 import { useTheme } from '../../context/ThemeContext.jsx';
+import Footer from '../../components/Footer.jsx';
 
 const Home = () => {
   const { darkMode } = useTheme();
@@ -12,7 +13,7 @@ const Home = () => {
   return (
     <div className={`min-h-screen overflow-x-hidden ${darkMode ? 'bg-slate-800' : 'bg-white'} font-sans`}>
       <Helmet>
-        <title>Home | QSpace - Smart BCS Prep</title>
+        <title>BackendMaster | HOME</title>
       </Helmet>
 
       <Navbar />
@@ -21,6 +22,7 @@ const Home = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <CompanySection />
         <FeatureSection />
+        <Footer/>
       </main>
     </div>
   );

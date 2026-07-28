@@ -11,11 +11,11 @@ const RightSection = () => {
       <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] ${
         darkMode ? "text-white" : "text-slate-900"
       }`}>
-        <span>Master </span>
+        <span>Mastering </span>
         
         {/* Gradient Text with Organic Underline SVG */}
         <span className="relative inline-block bg-linear-to-r from-emerald-500 via-teal-400 to-sky-500 bg-clip-text text-transparent pb-1">
-          BCS, Bank
+          BACKEND
           <svg
             className="absolute -bottom-1 left-0 w-full h-3 text-emerald-400/80 pointer-events-none"
             viewBox="0 0 250 10"
@@ -33,20 +33,20 @@ const RightSection = () => {
         </span>
         
         <br />
-        <span>Preliminary</span>
+        <span>Software Engineering</span>
       </h1>
 
       {/* --- SUBTITLE WITH BOLD HIGHLIGHTS --- */}
       <p className={`max-w-2xl text-base sm:text-lg md:text-xl font-normal leading-relaxed ${
         darkMode ? "text-slate-400" : "text-slate-600"
       }`}>
-        The modern way to prepare for BCS, Bank, Primary, and Related Government Jobs with{" "}
+        The modern way to prepare for backend engineering roles at top-tier tech companies Worldwide.
         <strong className={`font-bold ${darkMode ? "text-slate-100" : "text-slate-900"}`}>
-          pattern based
+         Build production-ready applications, develop problem-solving skills an 
         </strong>{" "}
         and{" "}
         <strong className={`font-bold ${darkMode ? "text-slate-100" : "text-slate-900"}`}>
-          Most asked Question Pattern
+          engineering mindset.
         </strong>.
       </p>
 

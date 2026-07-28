@@ -13,13 +13,13 @@ const container=document.getElementById('root')
 createRoot(container).render(
   
   <HelmetProvider> 
-    <ThemeProvider> 
+  <ThemeProvider> 
   <BrowserRouter> 
   <AppContextProvider>
-
     <App />
   </AppContextProvider>
-  </BrowserRouter></ThemeProvider>
+  </BrowserRouter>
+  </ThemeProvider>
   </HelmetProvider>
   
 )

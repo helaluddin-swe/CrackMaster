@@ -114,7 +114,7 @@ export default function LearningDashboard() {
   }
 
   return (
-    // The wrapper acts as a fixed screen overlay, hiding overflowing content so only the center scrolls
+  
     <div className={`flex h-screen overflow-hidden font-sans transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       
       <LeftSidebar
@@ -123,7 +123,7 @@ export default function LearningDashboard() {
         currentSubtopic={currentSubtopic}
         setCurrentSubtopic={(subtopic) => {
           setCurrentSubtopic(subtopic);
-          // Sync currentIndex when user clicks a subtopic in the sidebar
+          
           const newIndex = allSubtopics.findIndex(s => s._id === subtopic._id || s.id === subtopic.id);
           if (newIndex !== -1) setCurrentIndex(newIndex);
         }}

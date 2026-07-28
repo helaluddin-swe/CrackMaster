@@ -53,7 +53,7 @@ const HeroSection = () => {
             <div>
               <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider mb-1 text-emerald-500">
                 <Sparkles size={14} />
-                <span>Be PriliMaster</span>
+                <span>Be Strong</span>
               </div>
               <h2 className={`text-2xl sm:text-3xl font-black tracking-tight ${
                 darkMode ? "text-white" : "text-slate-900"

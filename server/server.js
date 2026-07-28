@@ -23,8 +23,6 @@ app.use(express.json());
 
 // --- CORS Configuration ---
 const allowedOrigins = [
-  "https://bcs-mu.vercel.app", 
-  "https://destinationbcs-admin.vercel.app",
   "http://localhost:5173", 
   "http://localhost:5174",
 ];

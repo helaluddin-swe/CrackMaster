@@ -13,8 +13,9 @@ import WrittenHub from '../pages/writtenHub/WrittenHUb';
 import { useTheme } from '../context/ThemeContext';
 import UserProfile from './UserProfile';
 import ResourcesMenu from './navbar/ResourceMenu';
-import LearnMenu, { subjectCourses } from './navbar/LearnMenu';
+import LearnMenu from './navbar/LearnMenu';
 import LogoUpdated from './navbar/LogoUpdated';
+import { subjectCourses } from '../utils/data';
 
 const Navbar = () => {
     const { navigate, isLoggedIn, userData, logout } = useAppContext();
@@ -86,13 +87,11 @@ const Navbar = () => {
 
                     {/* Desktop Navigation Links */}
                     <div className="hidden lg:flex items-center gap-2">
+                        <LearnMenu handleActionClick={handleActionClick} onNavigate={onNavigate} />
                         <ActionButton id="mcq" label="Practise" variant="secondary" icon={Sparkles} onClick={() => handleActionClick('mcq')} />
                         <ActionButton id="model" label="Model Test" icon={GraduationCap} onClick={() => handleActionClick('model')} />
 
-                        {/* Modular Learn Dropdown */}
-                        <LearnMenu handleActionClick={handleActionClick} onNavigate={onNavigate} />
-
-                        {/* Modular Resources Dropdown */}
+                    {/* Modular Resources Dropdown */}
                         <ResourcesMenu handleActionClick={handleActionClick} onNavigate={onNavigate} />
 
                         <div className={`h-6 w-px mx-1 ${darkMode ? "bg-slate-800" : "bg-slate-200"}`} />
