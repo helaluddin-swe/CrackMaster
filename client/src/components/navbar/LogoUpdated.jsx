@@ -12,7 +12,7 @@ const LogoUpdated = ({onNavigate}) => {
         <span className="relative inline-block bg-linear-to-r from-emerald-500 via-teal-400 to-sky-500 bg-clip-text text-transparent pb-1">
           MASTER
           <svg
-            className="absolute -bottom-1 left-0 w-full h-3 text-emerald-400/80 pointer-events-none"
+            className="absolute -bottom-0.5 left-0 w-full h-3 text-emerald-400/80 pointer-events-none"
             viewBox="0 0 250 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

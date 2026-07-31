@@ -4,6 +4,7 @@ import { useAppContext } from '../../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { ShieldCheck, Lock, Mail, KeyRound } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const LoginPage = () => {
   const [adminSecret, setAdminSecret] = useState('');
   const [isStaffMode, setIsStaffMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const {darkMode}=useTheme()
   
   const navigate = useNavigate();
   const { 
@@ -50,11 +52,6 @@ const LoginPage = () => {
 
         toast.success("Login Successful!");
 
-        if (user.role === 'admin' || user.role === 'moderator') {
-          navigate('/admin-control-center');
-        } else {
-          navigate('/');
-        }
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
@@ -77,7 +74,7 @@ const LoginPage = () => {
               {isStaffMode ? 'Staff Login' : 'Welcome Back'}
             </h2>
             <p className="text-slate-400 text-sm mt-2">
-              {isStaffMode ? 'Authorized Personnel Only' : 'DestinationBCS: Access your account'}
+              {isStaffMode ? 'Authorized Personnel Only' : 'BackendMASTER: Access your account'}
             </p>
         </div>
         

@@ -16,6 +16,7 @@ import ResourcesMenu from './navbar/ResourceMenu';
 import LearnMenu from './navbar/LearnMenu';
 import LogoUpdated from './navbar/LogoUpdated';
 import { subjectCourses } from '../utils/data';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
     const { navigate, isLoggedIn, userData, logout } = useAppContext();
@@ -114,6 +115,9 @@ const Navbar = () => {
                         >
                             {darkMode ? <Sun size={18} className="text-amber-400 transition-transform duration-500 hover:rotate-90" /> : <Moon size={18} className="text-indigo-600 transition-transform duration-500 hover:-rotate-12" />}
                         </button>
+                        <div>
+                            <LanguageSwitcher/>
+                        </div>
                     </div>
 
                     {/* Mobile Controls */}

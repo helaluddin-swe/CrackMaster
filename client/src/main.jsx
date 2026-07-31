@@ -5,6 +5,7 @@ import AppContextProvider from './context/AppContext.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from './context/ThemeContext.jsx'
+import { LanguageProvider } from './context/LanguageContext.jsx'
 
 
 
@@ -14,11 +15,13 @@ createRoot(container).render(
   
   <HelmetProvider> 
   <ThemeProvider> 
+    <LanguageProvider>
   <BrowserRouter> 
   <AppContextProvider>
     <App />
   </AppContextProvider>
   </BrowserRouter>
+   </LanguageProvider>
   </ThemeProvider>
   </HelmetProvider>
   

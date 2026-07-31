@@ -4,6 +4,7 @@ import { useAppContext } from '../../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast'; // Ensure this is imported
 import { ShieldAlert, User, Mail, Lock, ShieldCheck } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ 
@@ -16,6 +17,7 @@ const SignUpPage = () => {
   
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const {darkMode}=useTheme()
   
   const navigate = useNavigate();
   const { backendUrl, setIsLoggedIn, setUserData, setIsAdminAuthenticated } = useAppContext();
@@ -80,7 +82,7 @@ const SignUpPage = () => {
             {isAdminMode ? 'Staff Enrollment' : 'Create Account'}
            </h2>
            <p className="text-slate-400 text-sm mt-2">
-            {isAdminMode ? 'Elevated Access Registration' : 'Join the Destination BCS platform'}
+            {isAdminMode ? 'Elevated Access Registration' : 'Join the BackendMASTER platform'}
            </p>
         </div>
 

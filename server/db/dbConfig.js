@@ -1,24 +1,27 @@
 const mongoose = require('mongoose');
 
-// সরাসরি env থেকে URI নিন
 const uri = process.env.MONGODB_URI;
 
 const connectDB = async () => {
   if (!uri) {
     console.error('❌ MONGODB_URI is not defined in .env file');
-    return;
+    process.exit(1);
   }
 
   try {
-    // strictQuery সেট করা ভালো (Mongoose 7+ এর জন্য)
+    // Recommended for Mongoose 7+
     mongoose.set('strictQuery', false);
 
-    await mongoose.connect(uri);
-    console.log('✅ Connected to MongoDB Atlas: bcsDB');
+    const conn = await mongoose.connect(uri, {
+      // Optional but useful options
+      // serverSelectionTimeoutMS: 5000,
+    });
+
+    console.log(`✅ Connected to MongoDB Atlas: ${conn.connection.name}`);
   } catch (err) {
     console.error('❌ Failed to connect to MongoDB');
     console.error('Error Details:', err.message);
-    process.exit(1); 
+    process.exit(1);
   }
 };
 
