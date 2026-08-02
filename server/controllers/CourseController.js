@@ -1,88 +1,4 @@
 const Course = require("../models/Course.js");
-
-// @desc    Get all courses (returns titles and slugs, optionally filtering by language via ?lang=en)
-// @route   GET /api/v1/courses
-exports.getCourses = async (req, res) => {
-  try {
-    const lang = req.query.lang || "en";
-    const courses = await Course.find({});
-
-    const formattedCourses = courses.map((course) => ({
-      _id: course._id,
-      slug: course.slug,
-      title: course.title?.[lang] || course.title?.en || course.slug,
-      createdAt: course.createdAt,
-      updatedAt: course.updatedAt,
-    }));
-
-    res.status(200).json({ success: true, data: formattedCourses });
-  } catch (error) {
-    console.error("getCourses Error:", error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
-
-// @desc    Get a single course with full curriculum
-//          Supports optional ?lang=en|bn|fr|es to return a flattened single-language view
-// @route   GET /api/v1/courses/:slug
-exports.getCourseBySlug = async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const { lang } = req.query;
-
-    const course = await Course.findOne({ slug });
-
-    if (!course) {
-      return res.status(404).json({ success: false, message: "Course not found" });
-    }
-
-    // Return single-language flattened view if requested
-    if (lang && ["en", "bn", "fr", "es"].includes(lang)) {
-      const extractLang = (obj) => {
-        if (!obj) return obj;
-        if (typeof obj === "object" && !Array.isArray(obj) && (obj.en || obj.bn || obj.fr || obj.es)) {
-          return obj[lang] || obj.en || "";
-        }
-        return obj;
-      };
-
-      const localizedCourse = JSON.parse(JSON.stringify(course));
-
-      localizedCourse.title = extractLang(localizedCourse.title);
-
-      localizedCourse.chapters?.forEach((chapter) => {
-        chapter.title = extractLang(chapter.title);
-
-        chapter.topics?.forEach((topic) => {
-          topic.title = extractLang(topic.title);
-
-          topic.subtopics?.forEach((sub) => {
-            sub.title = extractLang(sub.title);
-            sub.content = extractLang(sub.content);
-
-            sub.questions?.forEach((q) => {
-              q.questionText = extractLang(q.questionText);
-              q.options = extractLang(q.options); // returns the array for the requested lang
-              q.explanation = extractLang(q.explanation);
-            });
-          });
-        });
-      });
-
-      return res.status(200).json({ success: true, data: localizedCourse });
-    }
-
-    // Full multi-language structure
-    res.status(200).json({ success: true, data: course });
-  } catch (error) {
-    console.error("getCourseBySlug Error:", error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
-
-// @desc    Seed database with bulk JSON OR upsert a single course hierarchy from Admin panel
-// @route   POST /api/v1/courses
-// @route   POST /api/v1/courses/seed
 exports.seedCourses = async (req, res) => {
   try {
     const reqBody = req.body;
@@ -239,5 +155,181 @@ exports.seedCourses = async (req, res) => {
     }
 
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
+
+// new version code
+
+
+
+// @desc    Get all courses
+// @route   GET /api/v1/courses
+exports.getCourses = async (req, res) => {
+  try {
+    const lang = req.query.lang || "en";
+    const courses = await Course.find({});
+
+    const formattedCourses = courses.map((course) => ({
+      _id: course._id,
+      slug: course.slug,
+      title: course.title?.[lang] || course.title?.en || course.slug,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
+    }));
+
+    res.status(200).json({ success: true, data: formattedCourses });
+  } catch (error) {
+    console.error("getCourses Error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// @desc    Get a single course with full curriculum
+// @route   GET /api/v1/courses/:slug
+exports.getCourseBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const { lang } = req.query;
+
+    const course = await Course.findOne({ slug });
+
+    if (!course) {
+      return res.status(404).json({ success: false, message: "Course not found" });
+    }
+
+    if (lang && ["en", "bn", "fr", "es"].includes(lang)) {
+      const extractLang = (obj) => {
+        if (!obj) return obj;
+        if (typeof obj === "object" && !Array.isArray(obj) && (obj.en || obj.bn || obj.fr || obj.es !== undefined)) {
+          return obj[lang] || obj.en || "";
+        }
+        return obj;
+      };
+
+      const localizedCourse = JSON.parse(JSON.stringify(course));
+      localizedCourse.title = extractLang(localizedCourse.title);
+
+      localizedCourse.chapters?.forEach((chapter) => {
+        chapter.title = extractLang(chapter.title);
+
+        chapter.topics?.forEach((topic) => {
+          topic.title = extractLang(topic.title);
+
+          topic.subtopics?.forEach((sub) => {
+            sub.title = extractLang(sub.title);
+            sub.content = extractLang(sub.content);
+
+            sub.questions?.forEach((q) => {
+              q.questionText = extractLang(q.questionText);
+              q.options = extractLang(q.options); 
+              q.explanation = extractLang(q.explanation);
+            });
+          });
+        });
+      });
+
+      return res.status(200).json({ success: true, data: localizedCourse });
+    }
+
+    res.status(200).json({ success: true, data: course });
+  } catch (error) {
+    console.error("getCourseBySlug Error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// @desc    Seed or Update Courses
+// @route   POST /api/v1/courses/seed
+
+
+// NEW: @desc Toggle Like, Bookmark, or Completion on a subtopic
+// @route PUT /api/v1/courses/:slug/subtopics/:subtopicId/interact
+exports.handleSubtopicInteraction = async (req, res) => {
+  try {
+    const { slug, subtopicId } = req.params;
+    const { action } = req.body; // 'like', 'bookmark', or 'complete'
+    const userId = req.user?._id; 
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized: No user found' });
+    }
+
+    const course = await Course.findOne({ slug });
+    if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
+
+    let targetSubtopic = null;
+    
+    // Find the subtopic nested inside chapters -> topics -> subtopics using string comparison for safety
+    for (let chapter of course.chapters) {
+      for (let topic of chapter.topics) {
+        const sub = topic.subtopics.find(s => s._id.toString() === subtopicId);
+        if (sub) {
+          targetSubtopic = sub;
+          break;
+        }
+      }
+      if (targetSubtopic) break;
+    }
+
+    if (!targetSubtopic) {
+      return res.status(404).json({ success: false, message: 'Subtopic not found' });
+    }
+
+    // Initialize arrays if they don't exist
+    if (!targetSubtopic.likedBy) targetSubtopic.likedBy = [];
+    if (!targetSubtopic.bookmarkedBy) targetSubtopic.bookmarkedBy = [];
+    if (!targetSubtopic.completedBy) targetSubtopic.completedBy = [];
+
+    let updatedState = false;
+    const userIdStr = userId.toString();
+
+    if (action === 'like') {
+      const index = targetSubtopic.likedBy.findIndex(id => id.toString() === userIdStr);
+      if (index > -1) {
+        targetSubtopic.likedBy.splice(index, 1);
+        updatedState = false;
+      } else {
+        targetSubtopic.likedBy.push(userId);
+        updatedState = true;
+      }
+    } else if (action === 'bookmark') {
+      const index = targetSubtopic.bookmarkedBy.findIndex(id => id.toString() === userIdStr);
+      if (index > -1) {
+        targetSubtopic.bookmarkedBy.splice(index, 1);
+        updatedState = false;
+      } else {
+        targetSubtopic.bookmarkedBy.push(userId);
+        updatedState = true;
+      }
+    } else if (action === 'complete') {
+      const index = targetSubtopic.completedBy.findIndex(id => id.toString() === userIdStr);
+      if (index > -1) {
+        targetSubtopic.completedBy.splice(index, 1);
+        updatedState = false;
+        targetSubtopic.completed = false;
+      } else {
+        targetSubtopic.completedBy.push(userId);
+        updatedState = true;
+        targetSubtopic.completed = true;
+      }
+    } else {
+      return res.status(400).json({ success: false, message: 'Invalid action type' });
+    }
+
+    // Explicitly mark the parent document as modified to ensure Mongoose persists nested changes
+    course.markModified('chapters');
+    await course.save();
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully updated ${action}`,
+      state: updatedState,
+      data: course
+    });
+  } catch (err) {
+    console.error('Interaction error:', err);
+    return res.status(500).json({ success: false, message: 'Server Error' });
   }
 };

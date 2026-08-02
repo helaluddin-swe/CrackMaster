@@ -2,8 +2,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "../context/ThemeContext";
 
 const LanguageSwitcher = () => {
-  const { activeLanguage, pageLanguage, setLanguage, setPageLanguage } =
-    useLanguage();
+  const { language, setLanguage } = useLanguage();
   const { darkMode } = useTheme();
 
   const languages = [
@@ -15,20 +14,13 @@ const LanguageSwitcher = () => {
 
   const handleLanguageChange = (e) => {
     const code = e.target.value;
-
-    // If a page-level override is active → update the override
-    // Otherwise → update the global language
-    if (pageLanguage !== null) {
-      setPageLanguage(code);
-    } else {
-      setLanguage(code);
-    }
+    setLanguage(code);
   };
 
   return (
     <div className="flex items-center">
       <select
-        value={activeLanguage}
+        value={language || "en"}
         onChange={handleLanguageChange}
         className={`
           px-3 py-1.5 text-xs font-bold rounded-lg border shadow-sm cursor-pointer

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { subjectCourses } from '../../utils/data';
 
-
 export default function LeftSidebar({
   courseData,
   currentSubjectSlug,
@@ -60,71 +59,74 @@ export default function LeftSidebar({
 
   return (
     <aside className={`
-      fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 shadow-xl lg:shadow-none
-      ${isCollapsed ? 'lg:w-20' : 'lg:w-70'} w-84
-      ${darkMode ? 'bg-slate-950 border-r border-slate-800/80 text-slate-100' : 'bg-white border-r border-slate-200 text-slate-900'}
+      fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none border-r
+      ${isCollapsed ? 'lg:w-20' : 'lg:w-80'} w-80
+      ${darkMode ? 'bg-slate-950 border-slate-800/60 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-900'}
       lg:translate-x-0 lg:static
       ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
     `}>
       {/* Header & Brand Title */}
-      <div className={`p-4 border-b flex mt-20 md:mt-4 items-center justify-between ${darkMode ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50/50'}`}>
+      <div className={`p-4 border-b flex mt-20 md:mt-0 items-center justify-between shrink-0 ${darkMode ? 'border-slate-800/60 bg-slate-950/80' : 'border-slate-200 bg-white'}`}>
         {!isCollapsed && (
-          <div className="flex items-center space-x-2.5 truncate">
-            <div className={`p-2 rounded-xl ${darkMode ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
+          <div className="flex items-center space-x-3 truncate">
+            <div className={`p-2 rounded-xl shadow-sm ${darkMode ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
               <BookOpen className="w-4 h-4 shrink-0" />
             </div>
             <div className="truncate">
-              <h1 className={`font-bold text-xs tracking-wide uppercase truncate ${darkMode ? 'text-indigo-300' : 'text-indigo-900'}`}>
+              <h1 className={`font-bold text-sm tracking-wide truncate ${darkMode ? 'text-slate-100' : 'text-slate-900'}`}>
                 {courseData?.title || "Learning Hub"}
               </h1>
-              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Interactive Curriculum</p>
+              <p className={`text-[11px] font-medium uppercase tracking-wider mt-0.5 ${darkMode ? 'text-indigo-400/80' : 'text-indigo-600/80'}`}>
+                Interactive Curriculum
+              </p>
             </div>
           </div>
         )}
 
         {isCollapsed && (
           <div className="mx-auto">
-            <div className={`p-2 rounded-xl ${darkMode ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
+            <div className={`p-2 rounded-xl shadow-sm ${darkMode ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
               <BookOpen className="w-4 h-4 shrink-0" />
             </div>
           </div>
         )}
 
         <div className="flex items-center space-x-1">
-          {/* Desktop Minimize / Expand Toggle Button */}
+          {/* Desktop Minimize / Expand Toggle */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             title={isCollapsed ? "Expand Sidebar" : "Minimize Sidebar"}
-            className={`hidden lg:flex p-1.5 rounded-lg transition-colors ${darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+            className={`hidden lg:flex p-1.5 rounded-lg transition-all ${darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
           >
-            {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+            {isCollapsed ? <PanelLeftOpen className="w-4.5 h-4.5" /> : <PanelLeftClose className="w-4.5 h-4.5" />}
           </button>
 
           {/* Mobile Close Button */}
           <button
             onClick={() => setMobileOpen(false)}
-            className={`lg:hidden p-1.5 rounded-lg transition-colors ${darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+            className={`lg:hidden p-1.5 rounded-lg transition-all ${darkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
       </div>
 
       {!isCollapsed && (
-        <>
+        <div className="shrink-0">
           {/* Subject Swapper Selector */}
-          <div className={`p-3.5 border-b ${darkMode ? 'border-slate-800/80 bg-slate-900/20' : 'border-slate-200 bg-slate-50/30'}`}>
-            <label className={`text-[10px] font-semibold uppercase tracking-wider block mb-1.5 px-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-              Select Subject Domain
+          <div className={`p-4 border-b ${darkMode ? 'border-slate-800/60 bg-slate-900/20' : 'border-slate-200 bg-white/50'}`}>
+            <label className={`text-[10px] font-bold uppercase tracking-wider block mb-2 px-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              Subject Domain
             </label>
-            <div className="relative">
+            <div className="relative group">
               <select
                 value={currentSubjectSlug}
                 onChange={(e) => navigate(`/courses/${e.target.value}`)}
-                className={`w-full appearance-none rounded-xl px-3 py-2 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${darkMode
-                    ? 'bg-slate-900 text-indigo-300 border border-slate-800 hover:border-slate-700'
-                    : 'bg-white text-indigo-900 border border-slate-200 hover:border-slate-300 shadow-sm'
-                  }`}
+                className={`w-full appearance-none rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all cursor-pointer outline-none ring-2 ring-transparent focus:ring-indigo-500/30 ${
+                  darkMode
+                    ? 'bg-slate-900 text-indigo-300 border-slate-700 hover:bg-slate-800 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]'
+                    : 'bg-white text-indigo-900 border-slate-200 hover:border-slate-300 shadow-sm'
+                } border`}
               >
                 {subjectCourses.map((subject) => (
                   <option key={subject.slug} value={subject.slug}>
@@ -132,87 +134,96 @@ export default function LeftSidebar({
                   </option>
                 ))}
               </select>
-              <ChevronDown className={`w-3.5 h-3.5 absolute right-3 top-3 pointer-events-none ${darkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+              <ChevronDown className={`w-4 h-4 absolute right-3 top-3 pointer-events-none transition-colors ${darkMode ? 'text-indigo-400/50 group-hover:text-indigo-400' : 'text-indigo-900/50 group-hover:text-indigo-900'}`} />
             </div>
           </div>
 
           {/* Live Search Input */}
-          <div className={`p-3.5 border-b ${darkMode ? 'border-slate-800/80' : 'border-slate-200'}`}>
+          <div className={`p-4 border-b ${darkMode ? 'border-slate-800/60' : 'border-slate-200'}`}>
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search lessons & topics..."
-                className={`w-full rounded-xl pl-9 pr-4 py-2 text-xs transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${darkMode
-                    ? 'bg-slate-900 text-slate-200 border border-slate-800 placeholder-slate-500'
-                    : 'bg-slate-50 text-slate-800 border border-slate-200 placeholder-slate-400'
-                  }`}
+                placeholder="Search topics..."
+                className={`w-full rounded-xl pl-9 pr-8 py-2 text-xs font-medium transition-all outline-none ring-2 ring-transparent focus:ring-indigo-500/30 ${
+                  darkMode
+                    ? 'bg-slate-900 text-slate-200 border-slate-800 placeholder-slate-500 focus:bg-slate-950'
+                    : 'bg-white text-slate-800 border-slate-200 placeholder-slate-400 focus:bg-white shadow-sm'
+                } border`}
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-2.5 text-xs text-slate-400 hover:text-slate-200"
+                  className="absolute right-2 top-2 p-0.5 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
 
       {/* Chapters & Curriculum Tree List */}
-      <div className={`flex-1 overflow-y-auto p-3.5 space-y-3 custom-scrollbar ${isCollapsed ? 'items-center flex flex-col' : ''}`}>
+      <div className={`flex-1 overflow-y-auto p-3.5 space-y-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${isCollapsed ? 'items-center flex flex-col pt-6' : ''}`}>
         {isCollapsed ? (
-          <div className="py-4 text-center">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block [writing-mode:vertical-lr] mx-auto rotate-180">
-              Curriculum Minimized
+          <div className="text-center h-full flex flex-col justify-center">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] block [writing-mode:vertical-lr] mx-auto rotate-180">
+              Curriculum
             </span>
           </div>
         ) : filteredChapters.length === 0 ? (
-          <div className="text-center py-8 px-4">
-            <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>No curriculum modules found matching &quot;{searchQuery}&quot;</p>
+          <div className="flex flex-col items-center justify-center h-40 text-center px-4">
+            <Search className={`w-8 h-8 mb-3 opacity-20 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+            <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>No modules found for<br/><span className="text-slate-300 italic">&quot;{searchQuery}&quot;</span></p>
           </div>
         ) : (
           filteredChapters.map((chapter) => {
             const isChExp = searchQuery ? true : expandedChapters[chapter.id];
             return (
-              <div key={chapter.id} className="space-y-1">
+              <div key={chapter.id} className="space-y-1.5">
+                {/* Chapter Header */}
                 <button
                   onClick={() => toggleChapter(chapter.id)}
-                  className={`w-full flex items-center justify-between text-xs font-semibold py-2 px-2.5 rounded-xl transition-all ${darkMode
-                      ? 'text-slate-200 hover:bg-slate-900/80'
-                      : 'text-slate-800 hover:bg-slate-100/80'
-                    }`}
+                  className={`w-full flex items-center justify-between text-xs font-bold py-2.5 px-3 rounded-xl transition-all group ${
+                    darkMode
+                      ? 'text-slate-200 bg-slate-900/30 hover:bg-slate-900 border border-transparent hover:border-slate-800'
+                      : 'text-slate-800 bg-white hover:bg-slate-100 border border-transparent hover:border-slate-200'
+                  }`}
                 >
-                  <span className="truncate text-left flex items-center space-x-2">
-                    <span className={`w-1.5 h-1.5 rounded-full ${darkMode ? 'bg-indigo-400' : 'bg-indigo-600'}`}></span>
+                  <span className="truncate text-left flex items-center space-x-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.5)] ${darkMode ? 'bg-indigo-400 shadow-indigo-400/50' : 'bg-indigo-500 shadow-indigo-500/40'}`}></span>
                     <span className="truncate">{chapter.title}</span>
                   </span>
-                  {isChExp ? <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
+                  <div className={`p-1 rounded-md transition-colors ${darkMode ? 'group-hover:bg-slate-800' : 'group-hover:bg-slate-200'}`}>
+                    {isChExp ? <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
+                  </div>
                 </button>
 
+                {/* Topics Container */}
                 {isChExp && (
-                  <div className={`pl-2.5 space-y-1 border-l ml-3 my-1 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+                  <div className={`pl-3 space-y-1.5 border-l-2 ml-3.5 mt-2 mb-4 ${darkMode ? 'border-slate-800/80' : 'border-slate-200'}`}>
                     {chapter.topics.map((topic) => {
                       const isTopExp = searchQuery ? true : expandedTopics[topic.id];
                       return (
                         <div key={topic.id} className="space-y-1">
                           <button
                             onClick={() => toggleTopic(topic.id)}
-                            className={`w-full flex items-center justify-between text-xs py-1.5 px-2.5 rounded-lg transition-colors ${darkMode
-                                ? 'text-slate-300 hover:text-white hover:bg-slate-900/50'
-                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/50'
-                              }`}
+                            className={`w-full flex items-center justify-between text-[11px] font-semibold py-1.5 px-2.5 rounded-lg transition-colors group ${
+                              darkMode
+                                ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50'
+                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                            }`}
                           >
-                            <span className="truncate text-left font-medium">{topic.title}</span>
-                            {isTopExp ? <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" /> : <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />}
+                            <span className="truncate text-left uppercase tracking-wider">{topic.title}</span>
+                            {isTopExp ? <ChevronDown className="w-3 h-3 text-slate-500 shrink-0 group-hover:text-slate-400" /> : <ChevronRight className="w-3 h-3 text-slate-500 shrink-0 group-hover:text-slate-400" />}
                           </button>
 
+                          {/* Subtopics Container */}
                           {isTopExp && (
-                            <div className={`pl-2.5 space-y-1 border-l ml-2 my-1 ${darkMode ? 'border-slate-800/80' : 'border-slate-200/80'}`}>
+                            <div className="pl-1 space-y-0.5 mt-1">
                               {topic.subtopics.map((sub) => {
                                 const isSelected = currentSubtopic?.id === sub.id;
                                 return (
@@ -221,22 +232,31 @@ export default function LeftSidebar({
                                     onClick={() => {
                                       setCurrentSubtopic(sub);
                                       setMobileOpen(false);
+                                      // Dynamic URL update
+                                      navigate(`/courses/${currentSubjectSlug}/${topic.id}/${sub.id}`);
                                     }}
-                                    className={`w-full flex items-center space-x-2.5 text-xs py-2 px-2.5 rounded-xl transition-all text-left ${isSelected
+                                    className={`w-full flex items-center space-x-3 text-xs py-2 px-3 rounded-xl transition-all duration-200 text-left group ${
+                                      isSelected
                                         ? darkMode
-                                          ? 'bg-indigo-600/20 text-indigo-400 font-semibold border border-indigo-500/30 shadow-sm'
-                                          : 'bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200 shadow-sm'
+                                          ? 'bg-indigo-500/10 text-indigo-300 font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] ring-1 ring-indigo-500/30'
+                                          : 'bg-indigo-50 text-indigo-700 font-semibold ring-1 ring-indigo-200/60 shadow-sm'
                                         : darkMode
-                                          ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
-                                          : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/60'
-                                      }`}
+                                          ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                                          : 'text-slate-500 hover:text-slate-900 hover:bg-white'
+                                    }`}
                                   >
                                     {sub.completed ? (
-                                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                                      <CheckCircle2 className={`w-4 h-4 shrink-0 transition-colors ${isSelected ? 'text-emerald-400' : 'text-emerald-500/70 group-hover:text-emerald-500'}`} />
                                     ) : (
-                                      <Circle className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-indigo-400' : darkMode ? 'text-slate-600' : 'text-slate-300'}`} />
+                                      <Circle className={`w-4 h-4 shrink-0 transition-colors ${
+                                        isSelected 
+                                          ? 'text-indigo-400 fill-indigo-400/10' 
+                                          : darkMode 
+                                            ? 'text-slate-700 group-hover:text-slate-500' 
+                                            : 'text-slate-300 group-hover:text-slate-400'
+                                      }`} />
                                     )}
-                                    <span className="truncate">{sub.title}</span>
+                                    <span className="truncate leading-relaxed">{sub.title}</span>
                                   </button>
                                 );
                               })}
@@ -255,10 +275,10 @@ export default function LeftSidebar({
 
       {/* Footer Branding or Progress Summary */}
       {!isCollapsed && (
-        <div className={`p-3.5 border-t text-center ${darkMode ? 'border-slate-800/80 bg-slate-900/30' : 'border-slate-200 bg-slate-50/50'}`}>
-          <div className="flex items-center justify-center space-x-1.5 text-[11px] font-medium text-indigo-400">
-            <Sparkles className="w-3 h-3" />
-            <span>Keep pushing your limits</span>
+        <div className={`p-4 border-t mt-auto shrink-0 ${darkMode ? 'border-slate-800/60 bg-slate-950' : 'border-slate-200 bg-slate-50'}`}>
+          <div className="flex items-center justify-center space-x-2 text-[11px] font-bold uppercase tracking-widest text-indigo-500/80">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Keep Building</span>
           </div>
         </div>
       )}

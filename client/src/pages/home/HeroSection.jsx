@@ -3,7 +3,7 @@ import { Sparkles, ArrowRight } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
 
 import RightSection from './hero/RightSection'
-import DailyTestBanner from '../modelTestHub/DailyTestBanner'
+
 import { allCategories } from '../../context/data'
 
 const HeroSection = () => {
@@ -147,7 +147,7 @@ const HeroSection = () => {
              Test Your Probability
             </p>
           </div>
-            <DailyTestBanner />
+           
           </div>
         </div>
 

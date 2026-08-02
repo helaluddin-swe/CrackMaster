@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
     Menu, X, GraduationCap,
-    LayoutDashboard, LogOut, UserPlus, LogIn, Sparkles,
-    Sun, Moon, History, LayoutGrid
+    LayoutDashboard, LogOut, LogIn, Sparkles,
+    Sun, Moon, LayoutGrid
 } from 'lucide-react';
 
 import { useAppContext } from '../context/AppContext';
-import BcsModelTest from '../pages/modelTestHub/BcsModelTest';
-import QuestionBankPage from '../pages/mcqHub/QuestionBank';
-import ArticleMenu from '../pages/article/ArticleMenu';
-import WrittenHub from '../pages/writtenHub/WrittenHUb';
+
 import { useTheme } from '../context/ThemeContext';
 import UserProfile from './UserProfile';
-import ResourcesMenu from './navbar/ResourceMenu';
 import LearnMenu from './navbar/LearnMenu';
 import LogoUpdated from './navbar/LogoUpdated';
 import { subjectCourses } from '../utils/data';
@@ -71,7 +67,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed top-0 w-full px-4 sm:px-6 z-9999 transition-all duration-300 ease-in-out ${
+        <nav className={`fixed top-0 w-full px-4 sm:px-6 z-[9999] transition-all duration-300 ease-in-out ${
             scrolled 
                 ? (darkMode 
                     ? "bg-[#0b0f1a]/90 backdrop-blur-md border-b border-slate-800/80 py-2.5 shadow-lg" 
@@ -84,7 +80,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-12">
 
                     {/* Logo Section */}
-                   <LogoUpdated onNavigate={onNavigate}/>
+                    <LogoUpdated onNavigate={onNavigate}/>
 
                     {/* Desktop Navigation Links */}
                     <div className="hidden lg:flex items-center gap-2">
@@ -92,16 +88,10 @@ const Navbar = () => {
                         <ActionButton id="mcq" label="Practise" variant="secondary" icon={Sparkles} onClick={() => handleActionClick('mcq')} />
                         <ActionButton id="model" label="Model Test" icon={GraduationCap} onClick={() => handleActionClick('model')} />
 
-                    {/* Modular Resources Dropdown */}
-                        <ResourcesMenu handleActionClick={handleActionClick} onNavigate={onNavigate} />
-
                         <div className={`h-6 w-px mx-1 ${darkMode ? "bg-slate-800" : "bg-slate-200"}`} />
 
                         {isLoggedIn ? <UserProfile /> : (
-                            <>
-                                <ActionButton label="Login" variant="secondary" icon={LogIn} onClick={() => onNavigate('/login')} />
-                                <ActionButton label="Join Now" icon={UserPlus} onClick={() => onNavigate('/signup')} />
-                            </>
+                            <ActionButton label="Login" variant="secondary" icon={LogIn} onClick={() => onNavigate('/login')} />
                         )}
 
                         <button
@@ -116,7 +106,7 @@ const Navbar = () => {
                             {darkMode ? <Sun size={18} className="text-amber-400 transition-transform duration-500 hover:rotate-90" /> : <Moon size={18} className="text-indigo-600 transition-transform duration-500 hover:-rotate-12" />}
                         </button>
                         <div>
-                            <LanguageSwitcher/>
+                           {isLoggedIn && <LanguageSwitcher/>}  
                         </div>
                     </div>
 
@@ -175,7 +165,6 @@ const Navbar = () => {
                         {isLoggedIn && <MobileMenuBtn icon={LayoutDashboard} label="Dashboard" color="indigo" onClick={() => onNavigate('/dashboard')} darkMode={darkMode} />}
                         <MobileMenuBtn icon={Sparkles} label="Practise" color="indigo" onClick={() => handleActionClick('mcq')} darkMode={darkMode} />
                         <MobileMenuBtn icon={GraduationCap} label="Model Test" color="blue" onClick={() => handleActionClick('model')} darkMode={darkMode} />
-                        <MobileMenuBtn icon={History} label="Previous Ques." color="amber" onClick={() => handleActionClick(null, '/previous-exam-questions')} darkMode={darkMode} />
                     </div>
 
                     <div className={`pt-2 border-t ${darkMode ? "border-slate-800" : "border-slate-100"}`}>
@@ -240,8 +229,6 @@ const Navbar = () => {
             {/* Modals */}
             {activeMenu === 'model' && <BcsModelTest onClose={() => setActiveMenu(null)} />}
             {activeMenu === 'mcq' && <QuestionBankPage onClose={() => setActiveMenu(null)} />}
-            {activeMenu === 'article' && <ArticleMenu onClose={() => setActiveMenu(null)} />}
-            {activeMenu === 'written' && <WrittenHub onClose={() => setActiveMenu(null)} />}
         </nav>
     );
 };

@@ -7,6 +7,7 @@ import { ShieldCheck, Lock, Mail, KeyRound } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 const LoginPage = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [adminSecret, setAdminSecret] = useState('');
@@ -21,6 +22,7 @@ const LoginPage = () => {
     setUserData, 
     setIsAdminAuthenticated 
   } = useAppContext();
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,16 +43,12 @@ const LoginPage = () => {
         const { token, user } = response.data;
 
         localStorage.setItem('token', token);
-        
-        // If the backend returns an admin role, unlock the context guard
-        if (user.role.toLowerCase() === 'admin') {
-          setIsAdminAuthenticated(true); 
-        }
 
         setUserData(user);
         setIsLoggedIn(true);
 
         toast.success("Login Successful!");
+        navigate("/")
 
       }
     } catch (error) {
@@ -107,21 +105,7 @@ const LoginPage = () => {
             />
           </div>
 
-          {isStaffMode && (
-            <div className="animate-in fade-in zoom-in-95 duration-300">
-              <label className="flex items-center gap-2 text-xs font-bold text-amber-500 uppercase ml-1 mb-1">
-                <KeyRound size={14} /> Admin Secret Key
-              </label>
-              <input 
-                type="password" 
-                required
-                value={adminSecret}
-                className="w-full bg-amber-500/5 border border-amber-500/20 px-4 py-3 rounded-xl text-amber-400 focus:ring-2 focus:ring-amber-600 outline-none transition"
-                placeholder="Enter secret key"
-                onChange={(e) => setAdminSecret(e.target.value)}
-              />
-            </div>
-          )}
+         
           
           <button 
             type="submit" 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Heart, Bookmark, MessageSquare, Highlighter as HighlighterIcon, Eraser
+  Heart, Bookmark, MessageSquare, Highlighter as HighlighterIcon, Eraser, CheckCircle
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import NextPagination from './NextPagination';
@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useAppContext } from '../../context/AppContext';
 import ContentHeader from './ContentHeader';
 import { useLanguage } from '../../context/LanguageContext';
+import CommentByUser from './CommentByUser';
+import UserInteraction from './UserInteraction';
 
 function MainContentView({
   currentSubtopic,
@@ -22,6 +24,8 @@ function MainContentView({
   setIsLiked,
   isBookmarked,
   setIsBookmarked,
+  isCompleted,       
+  setIsCompleted,    
   setMobileLeftOpen,
   setMobileRightOpen,
   onPrevious,
@@ -294,8 +298,9 @@ function MainContentView({
 
   return (
     <main
-      className={`flex-1 flex flex-col mt-4 min-w-0 ${darkMode ? 'bg-slate-900 text-slate-200' : 'bg-slate-50 text-slate-800'
-        } relative`}
+      className={`flex-1 flex flex-col mt-4 min-w-0 ${
+        darkMode ? 'bg-slate-900 text-slate-200' : 'bg-slate-50 text-slate-800'
+      } relative`}
     >
       {/* Top Navbar */}
       <ContentHeader
@@ -303,7 +308,7 @@ function MainContentView({
         handleCopy={handleCopy}
         handleShare={handleShare}
         shareOpen={shareOpen}
-        setShareOpen={setShareOpen}   // ← add this
+        setShareOpen={setShareOpen}
         currentSubtopic={currentSubtopic}
         setMobileLeftOpen={setMobileLeftOpen}
         isFocusMode={isFocusMode}
@@ -317,18 +322,18 @@ function MainContentView({
           onMouseDown={(e) => e.preventDefault()}
           onTouchStart={(e) => e.preventDefault()}
           onPointerDown={(e) => e.preventDefault()}
-          className={`fixed z-50 flex items-center gap-2 px-3 py-2 rounded-lg shadow-xl border transform -translate-x-1/2 ${darkMode
+          className={`fixed z-50 flex items-center gap-2 px-3 py-2 rounded-lg shadow-xl border transform -translate-x-1/2 ${
+            darkMode
               ? 'bg-slate-800 border-slate-700'
               : 'bg-white border-slate-200'
-            }`}
+          }`}
           style={{
             top: `${highlightMenu.top}px`,
             left: `${highlightMenu.left}px`
           }}
         >
           <HighlighterIcon
-            className={`w-4 h-4 ${darkMode ? 'text-slate-400' : 'text-slate-500'
-              }`}
+            className={`w-4 h-4 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}
           />
           <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
           {['#fef08a', '#bbf7d0', '#fbcfe8', '#bfdbfe'].map((color) => (
@@ -351,10 +356,11 @@ function MainContentView({
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center space-x-2 text-xs">
               <span
-                className={`px-2 py-0.5 rounded font-medium ${darkMode
+                className={`px-2 py-0.5 rounded font-medium ${
+                  darkMode
                     ? 'bg-indigo-950 border border-indigo-800 text-indigo-300'
                     : 'bg-indigo-50 border border-indigo-200 text-indigo-700'
-                  }`}
+                }`}
               >
                 {duration}
               </span>
@@ -362,8 +368,9 @@ function MainContentView({
                 •
               </span>
               <span
-                className={`capitalize font-medium ${darkMode ? 'text-slate-400' : 'text-slate-600'
-                  }`}
+                className={`capitalize font-medium ${
+                  darkMode ? 'text-slate-400' : 'text-slate-600'
+                }`}
               >
                 {currentSubjectSlug}
               </span>
@@ -372,10 +379,11 @@ function MainContentView({
             {hasActiveHighlights && (
               <button
                 onClick={clearHighlights}
-                className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-md transition-colors ${darkMode
+                className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-md transition-colors ${
+                  darkMode
                     ? 'text-rose-400 hover:bg-rose-500/10'
                     : 'text-rose-600 hover:bg-rose-50'
-                  }`}
+                }`}
               >
                 <Eraser className="w-3.5 h-3.5" /> Clear Highlights
               </button>
@@ -384,8 +392,9 @@ function MainContentView({
 
           {/* Localized Title */}
           <h1
-            className={`text-2xl md:text-3xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'
-              }`}
+            className={`text-2xl md:text-3xl font-bold tracking-tight ${
+              darkMode ? 'text-white' : 'text-slate-900'
+            }`}
           >
             {title || 'Untitled Lesson'}
           </h1>
@@ -403,8 +412,9 @@ function MainContentView({
           onMouseUp={handleTextSelection}
           onTouchEnd={handleTextSelection}
           onKeyUp={handleTextSelection}
-          className={`prose max-w-none leading-relaxed space-y-4 text-sm md:text-base selection:bg-indigo-200 selection:text-indigo-900 ${darkMode ? 'prose-invert text-slate-300' : 'text-slate-700'
-            }`}
+          className={`prose max-w-none leading-relaxed space-y-4 text-sm md:text-base selection:bg-indigo-200 selection:text-indigo-900 ${
+            darkMode ? 'prose-invert text-slate-300' : 'text-slate-700'
+          }`}
           dangerouslySetInnerHTML={{ __html: content }}
         />
 
@@ -412,47 +422,7 @@ function MainContentView({
         <Mcq currentSubtopic={currentSubtopic} />
 
         {/* Engagement Controls */}
-        <div
-          className={`pt-6 border-t flex items-center justify-between ${darkMode ? 'border-slate-800' : 'border-slate-200'
-            }`}
-        >
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setIsLiked(!isLiked)}
-              className={`flex items-center space-x-1.5 text-xs px-3 py-2 rounded-lg border transition-colors ${isLiked
-                  ? darkMode
-                    ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
-                    : 'bg-rose-50 border-rose-200 text-rose-600'
-                  : darkMode
-                    ? 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
-                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 shadow-sm'
-                }`}
-            >
-              <Heart
-                className={`w-4 h-4 ${isLiked ? 'fill-rose-400 text-rose-400' : ''
-                  }`}
-              />
-              <span>{isLiked ? 'Liked' : 'Like'}</span>
-            </button>
-            <button
-              onClick={() => setIsBookmarked(!isBookmarked)}
-              className={`flex items-center space-x-1.5 text-xs px-3 py-2 rounded-lg border transition-colors ${isBookmarked
-                  ? darkMode
-                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-                    : 'bg-amber-50 border-amber-200 text-amber-600'
-                  : darkMode
-                    ? 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
-                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 shadow-sm'
-                }`}
-            >
-              <Bookmark
-                className={`w-4 h-4 ${isBookmarked ? 'fill-amber-400 text-amber-400' : ''
-                  }`}
-              />
-              <span>{isBookmarked ? 'Saved' : 'Bookmark'}</span>
-            </button>
-          </div>
-        </div>
+        <UserInteraction isBookmarked={isBookmarked} isCompleted={isCompleted} isLiked={isLiked} setIsBookmarked={setIsBookmarked} setIsLiked={setIsLiked} setIsCompleted={setIsCompleted}/>
 
         {/* Pagination Controls */}
         <NextPagination
@@ -463,54 +433,7 @@ function MainContentView({
         />
 
         {/* Comments Section */}
-        <div className="pt-6 space-y-4">
-          <h3
-            className={`text-sm font-semibold flex items-center space-x-2 ${darkMode ? 'text-slate-200' : 'text-slate-900'
-              }`}
-          >
-            <MessageSquare className="w-4 h-4 text-indigo-500" />
-            <span>Discussion ({comments.length})</span>
-          </h3>
-          <form onSubmit={handleAddComment} className="flex gap-2">
-            <input
-              type="text"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Ask a question..."
-              className={`flex-1 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 ${darkMode
-                  ? 'bg-slate-900 border-slate-800 text-slate-200 placeholder-slate-500'
-                  : 'bg-white border-slate-200 text-slate-800 placeholder-slate-400 shadow-sm'
-                }`}
-            />
-            <button
-              type="submit"
-              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2 rounded-lg font-medium shadow-sm transition-colors"
-            >
-              Post
-            </button>
-          </form>
-          <div className="space-y-3 pt-2">
-            {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className={`p-3 rounded-xl space-y-1 border ${darkMode
-                    ? 'bg-slate-900/40 border-slate-800/80'
-                    : 'bg-white border-slate-200 shadow-sm'
-                  }`}
-              >
-                <span className="font-semibold text-xs text-indigo-500">
-                  {comment.user}
-                </span>
-                <p
-                  className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-700'
-                    }`}
-                >
-                  {comment.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CommentByUser comments={comments} handleAddComment={handleAddComment} setNewComment={setNewComment} newComment={newComment}/>
       </div>
     </main>
   );

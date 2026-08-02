@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 // Multi-language string – NOT required for every language
 const localizedStringSchema = {
@@ -17,44 +18,44 @@ const localizedArraySchema = {
 };
 
 // 1. Question Schema
-const questionSchema = new mongoose.Schema({
+const questionSchema = new Schema({
   questionText: localizedStringSchema,
   options: localizedArraySchema,
   correctOptionIndex: { type: Number, required: true, default: 0 },
-  explanation: localizedStringSchema          // ← added
+  explanation: localizedStringSchema
 }, { _id: false });
 
 // 2. Subtopic Schema
-const subtopicSchema = new mongoose.Schema({
+const subtopicSchema = new Schema({
   id: { type: String, required: true },
   title: localizedStringSchema,
   content: localizedStringSchema,
   duration: { type: String, default: '10 min read' },
-  completed: { type: Boolean, default: false },
-  questions: [questionSchema]
+  questions: [questionSchema],
+  bookmarkedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  likedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  completedBy: [{ type: Schema.Types.ObjectId, ref: "User" }] // Fixed duplicate/conflicting declaration
 }, { _id: false });
 
 // 3. Topic Schema
-const topicSchema = new mongoose.Schema({
+const topicSchema = new Schema({
   id: { type: String, required: true },
   title: localizedStringSchema,
   subtopics: [subtopicSchema]
 }, { _id: false });
 
 // 4. Chapter Schema
-const chapterSchema = new mongoose.Schema({
+const chapterSchema = new Schema({
   id: { type: String, required: true },
   title: localizedStringSchema,
   topics: [topicSchema]
 }, { _id: false });
 
 // 5. Main Course Schema
-const courseSchema = new mongoose.Schema({
+const courseSchema = new Schema({
   slug: { type: String, required: true, unique: true },
   title: localizedStringSchema,
   chapters: [chapterSchema]
 }, { timestamps: true });
 
-const Course = mongoose.model('Course', courseSchema);
-
-module.exports = Course;
+module.exports = mongoose.model('Course', courseSchema);

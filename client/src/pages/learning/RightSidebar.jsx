@@ -3,14 +3,14 @@ import { CheckCircle2, X } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import Promo1 from '../../components/promotion/Promo1';
 
-function RightSidebar({
+const RightSidebar = ({
   currentSubtopic,
   courseData,
   isFocusMode,
   mobileRightOpen,
   setMobileRightOpen,
   setCourseData
-}) {
+}) => {
   const { darkMode } = useTheme();
 
   const totalSubtopics = courseData?.chapters?.reduce(
@@ -24,9 +24,26 @@ function RightSidebar({
   const progressPercentage = Math.round((completedSubtopics / totalSubtopics) * 100);
 
   const toggleComplete = () => {
-    const updated = { ...courseData };
-    currentSubtopic.completed = !currentSubtopic.completed;
-    setCourseData(updated);
+    if (!currentSubtopic || !courseData) return;
+
+    const updatedChapters = courseData.chapters.map(chapter => ({
+      ...chapter,
+      topics: chapter.topics.map(topic => ({
+        ...topic,
+        subtopics: topic.subtopics.map(sub => 
+          sub.id === currentSubtopic.id 
+            ? { ...sub, completed: !sub.completed } 
+            : sub
+        )
+      }))
+    }));
+
+    const updatedCourseData = {
+      ...courseData,
+      chapters: updatedChapters
+    };
+
+    setCourseData(updatedCourseData);
   };
 
   return (
@@ -104,6 +121,6 @@ function RightSidebar({
       </div>
     </aside>
   );
-}
+};
 
 export default RightSidebar;

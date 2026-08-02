@@ -5,13 +5,11 @@ const dotenv = require("dotenv");
 // Config env before everything else
 dotenv.config();
 
-const Question = require("./models/QuestionModel");
 const connectDB = require("./db/dbConfig");
-const prevExamQuestionRoutes = require("./routes/QuestionExam.js");
-const articleItemsRoutes = require("./routes/artilceRoutes.js");
+
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
-const questionsRoutes = require("./routes/QuestionRoutes.js");
+
 const courseRoutes = require("./routes/courseRoutes.js");
 const highlightRoutes=require("./routes/highlightRoutes.js")
 
@@ -28,31 +26,22 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(null, false); // Prevents unhandled error crashes from CORS rejections
-    }
-  },
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: true
+  exposedHeaders:["Allow","Accept Query"],
+  preflightContinue:true,
 }));
 
 
 
-// --- ROUTES ---
-app.use("/api/v1/questions",questionsRoutes);
 
-// Use additional routes
-app.use(prevExamQuestionRoutes);
+
 
 // Root route for testing server status
 app.get("/", (req, res) => {
-  res.send("BCS Destination API is running...");
+  res.send("CrackMaster API is running...");
 });
 
-app.use("/api/articles", articleItemsRoutes);
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api/v1/courses", courseRoutes);
